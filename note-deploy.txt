@@ -1,0 +1,62 @@
+LOGIN PSQL (CLI) : (documentation : https://www.postgresql.org/docs/current/app-psql.html)
+    $ psql -V / --version (check version)
+    $ psql -U username (ex : psql -U postgres) (login to pg-account)
+    $ psql -U postgres -h localhost -d db_H8FinalProject_v2 (login to pg-account)
+
+DATABASE_URL=postgres://{user}:{password}@{hostname}:{port}/{database-name}
+
+BEFORE DEPLOY, ADD EXTRA FILE FOR RUN SCRIPT IN PACKAGE.JSON IN ROOT :
+    - touch Procfile (this file will search script to run node in hosting-app)
+    - insert this code "web: npm run prod" in the Procfile (this code will run script "prod" using npm that exists in file package.json)
+    (note : don't forget to re-setting index.js (./index.js) and connection to database (./db/database.js))
+
+STEP DEPLOY AND SETTING ENVIRONMENT IN HEROKU :
+    - Create Deploy App : 
+        1. https://dashboard.heroku.com/apps
+        2. create new app
+    - Init Deploy (Menu Deploy) :
+        3. open the destination app
+        4. select deployment method (ex : connect with github -> select repository name -> select branch to deploy -> enable automatic deploys -> done)
+        5. deploy successfully, but still empty and only the initial display of heroku.
+        note : we have to set up the environment and connect it to the database.
+    - Add Resources (Menu Resources) :
+        1. add resources for database (find add ons -> search for "heroku postgres" -> select plan name as needed -> submit order form )
+        2. resource "Heroku Postgres" successfully added
+        3. select attached as database in Heroku Postgres
+        4. now, we can see the database in the overview
+    - Setting Environment (Menu Settings) :
+        1. set config vars -> reveal config vars (note : Equalize key and value names according to the .env file)
+        2. DATABASE_URL that already exists in config vars is the hosting database that will be used (note: don't delete)
+        3. add extra configs in config vars : 
+           - NODE_ENV=production
+           - PGSSLMODE=require
+        4. if so, hide config vars
+        5. environment setting completed
+    
+USE HEROKU-CLI :
+    - install heroku-cli according to the version used (https://devcenter.heroku.com/articles/heroku-cli)
+    - command :
+        $ heroku --version (check version heroku)
+        $ heroku login (login to heroku account)
+        $ heroku config (to view config variables)
+        $ heroku git:remote -a example-app (ex: heroku git:remote -a hafidh-h8-finalproject-2) (add remote to local repository heroku-app)
+        $ heroku apps (see remote heroku-apps)
+        $ heroku addons (to view the resources installed in the application)
+        $ heroku pg:info (to view a description of the hosting database)
+        $ heroku pg:reset DATABASE_URL --confirm example-app (to reset hosting database)
+        $ heroku run npm run name_script (run script in package.json using heroku)
+    - push data from a local database into a remote Heroku Postgres database
+        $ set DATABASE_URL=postgres://{user}:{password}@{hostname}:{port}/{database-name} (to set the local database)
+        $ heroku pg:push localdb DATABASE_URL -a example-app (pushes data from a local database into a remote Heroku Postgres database)
+          note : only change arguments "localdb" and "example-app" 
+                 - localdb = postgres://{user}:{password}@{hostname}:{port}/{database-name}
+                 - DATABASE_URL = the hosting database as stated in config vars (don't change)
+                 - example-app = hafidh-h8-finalproject-2
+        if so, check again the description of the hosting database, the hosting database should already have the same structure as the local database :
+            - heroku pg:info
+            or
+            - heroku pg:psql (and then run this raw query to view the tables in the hosting database : SELECT table_schema || '.' || table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');)
+    - re-deploy :
+        $ heroku restart (restart dynos for deploy)
+        $ heroku logs --tail (to view log history)
+          
