@@ -52,8 +52,8 @@ const Users = db.define(
         notNull: true,
         isIn: [["male", "female"]],
         max: {
-          args: [6],
-          msg: "Maximum 6 characters allowed in gender",
+          args: [50],
+          msg: "Maximum 50 characters allowed in gender",
         },
       },
     },
@@ -65,8 +65,8 @@ const Users = db.define(
         notNull: true,
         isIn: [["admin", "customer"]],
         max: {
-          args: [255],
-          msg: "Maximum 255 characters allowed in role",
+          args: [50],
+          msg: "Maximum 50 characters allowed in role",
         },
       },
     },
@@ -86,8 +86,8 @@ const Users = db.define(
           msg: "Maximum Rp. 100.000.000 cash allowed in balance",
         },
         len: {
-          args: [1, 9],
-          msg: "Display balance must be between 1 and 9 characters in length",
+          args: [1, 255],
+          msg: "Display balance must be between 1 and 255 characters in length",
         },
       },
     },
