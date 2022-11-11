@@ -1,21 +1,28 @@
 {
   "name": "final_project_3",
   "version": "1.0.0",
-  "description": "[Link deploy heroku](https://hafidh-h8-finalproject-2.herokuapp.com/)",
+  "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "migrate-create": "node migrations/migrateCreateTable.js",
+    "migrate-drop": "node migrations/migrateDropTable.js",
+    "dev": "yes | npx kill-port 8000 && nodemon index.js",
+    "prod": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node index.js",
+    "prod-migrate-create": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node migrations/migrateCreateTable.js"
   },
-  "keywords": [],
-  "author": "",
+  "author": "hafidh ahmad fauzan",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
+    "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
-    "sequelize": "^6.25.5"
+    "sequelize": "^6.23.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
