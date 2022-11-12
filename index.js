@@ -1,5 +1,5 @@
 // import library
-import { port, node_env, database_url } from "./config.js";
+import { port, node_env } from "./config.js";
 import express from "express";
 import cors from "cors";
 import { checkConnection } from "./helpers/connectionDatabase.js";

@@ -35,7 +35,7 @@ const Categories = db.define(
       allowNull: false,
     },
     updatedAt: {
-      field: "createdat",
+      field: "updatedat",
       type: DataTypes.DATE,
       allowNull: false,
     },
