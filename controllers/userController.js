@@ -15,18 +15,22 @@ export const showUser = async (req, res) => {
         "gender",
         "role",
         "balance",
+        "createdAt"
       ],
       order: [["createdAt", "DESC"]],
     }).then((data) => {
-      data.dataValues.createdAt = moment(data.dataValues.createdAt).format(
-        "dddd, DD MMMM YYYY"
+      data = data.filter(
+        (item) =>
+          (item.dataValues.createdAt = moment(item.dataValues.createdAt).format(
+            "dddd, DD MMMM YYYY"
+        ))
       );
       res.status(200).send(data);
     });
   } catch (e) {
     res.status(400).send({
       status: "error",
-      message: e,
+      message: e.message,
     });
   }
 };
@@ -95,74 +99,117 @@ export const loginUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  // const { userId } = req.params;
-  // const user = req.user;
-  // const { full_name, email, username, profile_image_url, age, phone_number } =
-  //   req.body;
-  // try {
-  //   if (Number(userId) !== user.id) {
-  //     res
-  //       .status(401)
-  //       .send({ status: "error", message: "authorization failed" });
-  //     return;
-  //   }
-  //   await Users.update(
-  //     {
-  //       full_name: full_name,
-  //       email: email,
-  //       username: username,
-  //       profile_image_url: profile_image_url,
-  //       age: age,
-  //       phone_number: phone_number,
-  //     },
-  //     {
-  //       where: {
-  //         id: user.id,
-  //       },
-  //     }
-  //   ).then((data) => {
-  //     if (data[0] === 1) {
-  //       res.status(200).send({
-  //         user: req.body,
-  //       });
-  //     }
-  //   });
-  // } catch (e) {
-  //   res.status(400).send({
-  //     status: "error",
-  //     field: e.errors[0].path,
-  //     value: e.errors[0].value,
-  //     message: e.errors[0].message,
-  //   });
-  // }
+  const { userId } = req.params;
+  const user = req.user;
+  const { full_name, email } =
+    req.body;
+  try {
+    if (Number(userId) !== user.id) {
+      res
+        .status(401)
+        .send({ status: "error", message: "authorization failed" });
+      return;
+    }
+    await Users.update(
+      {
+        full_name: full_name,
+        email: email
+      },
+      {
+        where: {
+          id: user.id,
+        },
+        hooks: false
+      }
+    ).then(async (data) => {
+      if (data[0] === 1) {
+        await Users.findOne({
+          where:{id:user.id}
+        }).then((data) => {
+          if(!data){
+            res
+              .status(400)
+              .send({ status: "error", message: "User doesn't exist" });
+            return;
+          }
+          delete data.dataValues.password
+          delete data.dataValues.gender
+          delete data.dataValues.role
+          delete data.dataValues.balance
+          res.status(200).send({
+            user: data,
+          });
+        });
+      }
+    });
+  } catch (e) {
+    res.status(400).send({
+      status: "error",
+      field: e.errors[0].path,
+      value: e.errors[0].value,
+      message: e.errors[0].message,
+    });
+  }
 };
 
 export const deleteUser = async (req, res) => {
-  // const { userId } = req.params;
-  // const user = req.user;
-  // try {
-  //   if (Number(userId) !== user.id) {
-  //     res
-  //       .status(401)
-  //       .send({ status: "error", message: "authorization failed" });
-  //     return;
-  //   }
-  //   await Users.destroy({
-  //     where: {
-  //       id: user.id,
-  //     },
-  //     // truncate: true,
-  //   }).then((data) => {
-  //     if (data === 1) {
-  //       res.status(200).send({
-  //         message: "Your account has been successfully deleted",
-  //       });
-  //     }
-  //   });
-  // } catch (e) {
-  //   res.status(400).send({
-  //     status: "error",
-  //     message: e,
-  //   });
-  // }
+  const { userId } = req.params;
+  const user = req.user;
+  try {
+    if (Number(userId) !== user.id) {
+      res
+        .status(401)
+        .send({ status: "error", message: "authorization failed" });
+      return;
+    }
+    await Users.destroy({
+      where: {
+        id: user.id,
+      },
+      // truncate: true,
+    }).then((data) => {
+      if (data === 1) {
+        res.status(200).send({
+          message: "Your account has been successfully deleted",
+        });
+      }
+    });
+  } catch (e) {
+    res.status(400).send({
+      status: "error",
+      message: e,
+    });
+  }
+};
+
+export const topUp = async (req, res) => {
+  const user = req.user;
+  const { balance } =
+    req.body;
+  try {
+    await Users.update(
+      {
+        balance: balance,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+        hooks: false
+      }
+    ).then((data) => {
+      if (data[0] === 1) {
+        res.status(200).send({
+          message: `Your balance has been successfully updated to Rp ${balance}`,
+        });
+      }
+    });
+  } catch (e) {
+    res.status(400).send({
+      status: "error",
+      field: e.errors[0].path,
+      value: e.errors[0].value,
+      message: e.errors[0].message,
+    });
+  }
 };

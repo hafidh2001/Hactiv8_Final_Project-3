@@ -1,6 +1,9 @@
 import { Router } from "express";
 import userRoutes from "./userRoutes.js";
+import categoriesRoutes from "./categoriesRoutes.js";
+import productRoutes from "./productRoutes.js";
 import { authentication } from "../middlewares/authentication.js";
+import { authorizationAdmin } from "../middlewares/auth-admin.js";
 
 const router = Router();
 
@@ -9,10 +12,11 @@ router.get("/", (req, res) => {
   res.send("Hactive8 - Final Project 3");
 });
 
-// create same-endpoint
+// // create same-endpoint
 router.use("/users", userRoutes);
-router.use("/categories", authentication, () => {});
-router.use("/products", authentication, () => {});
-router.use("/transactions", authentication, () => {});
+router.use(authentication);
+router.use("/categories", authorizationAdmin, categoriesRoutes);
+router.use("/products", authorizationAdmin, productRoutes);
+// router.use("/transactions", authentication, () => {});
 
 export default router;
