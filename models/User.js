@@ -1,5 +1,6 @@
 import db from "../db/database.js";
 import { DataTypes } from "sequelize";
+import { hash } from "../helpers/bcrypt.js";
 
 const Users = db.define(
   "users",
@@ -50,7 +51,10 @@ const Users = db.define(
       validate: {
         notEmpty: true,
         notNull: true,
-        isIn: [["male", "female"]],
+        isIn: {
+          args: [["male", "female"]],
+          msg: "Gender has only 'male' or 'female' values",
+        },
         max: {
           args: [50],
           msg: "Maximum 50 characters allowed in gender",
@@ -63,7 +67,10 @@ const Users = db.define(
       validate: {
         notEmpty: true,
         notNull: true,
-        isIn: [["admin", "customer"]],
+        isIn: {
+          args: [["admin", "customer"]],
+          msg: "Role has only 'admin' or 'customer' values",
+        },
         max: {
           args: [50],
           msg: "Maximum 50 characters allowed in role",
@@ -105,6 +112,22 @@ const Users = db.define(
   {
     freezeTableName: true,
     timestamps: true,
+    hooks: {
+      beforeValidate: (users) => {
+        users.gender = users.gender.toLowerCase();
+        users.role = users.role.toLowerCase();
+        users.balance = 0;
+      },
+      afterValidate: async (users) => {
+        users.password = await hash(users.password);
+      },
+      beforeCreate: () => {
+        // console.log("beforeCreate");
+      },
+      afterCreate: (users) => {
+        users.balance = `Rp. ${users.balance} ,-`;
+      },
+    },
   }
 );
 
