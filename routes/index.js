@@ -1,6 +1,8 @@
 import { Router } from "express";
 import userRoutes from "./userRoutes.js";
+import categoryRoutes from "./categoryRoutes.js";
 import { authentication } from "../middlewares/authentication.js";
+import { authorizationAdmin } from "../middlewares/authorization-admin.js";
 
 const router = Router();
 
@@ -11,8 +13,9 @@ router.get("/", (req, res) => {
 
 // create same-endpoint
 router.use("/users", userRoutes);
-router.use("/categories", authentication, () => {});
-router.use("/products", authentication, () => {});
-router.use("/transactions", authentication, () => {});
+router.use(authentication);
+router.use("/categories", authorizationAdmin, categoryRoutes);
+router.use("/products", () => {});
+router.use("/transactions", () => {});
 
 export default router;

@@ -43,6 +43,20 @@ const Categories = db.define(
   {
     freezeTableName: true,
     timestamps: true,
+    hooks: {
+      beforeValidate: (category) => {
+        category.sold_product_amount = 0;
+      },
+      afterValidate: async () => {
+        // console.log("afterValidate");
+      },
+      beforeCreate: () => {
+        // console.log("beforeCreate");
+      },
+      afterCreate: () => {
+        // console.log("afterCreate");
+      },
+    },
   }
 );
 
