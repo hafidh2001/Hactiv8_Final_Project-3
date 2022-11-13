@@ -11,7 +11,7 @@ export const createProduct = async (req, res) => {
       return;
     }
     await Category.findOne({
-      where: { id: categoryId },
+      where: { id: Number(categoryId) },
     }).then((data) => {
       if (!data) {
         res
@@ -25,7 +25,7 @@ export const createProduct = async (req, res) => {
         title: title,
         price: price,
         stock: stock,
-        categoryId: categoryId,
+        categoryId: Number(categoryId),
       },
       {
         hooks: true,
@@ -142,7 +142,7 @@ export const updateCategoryProduct = async (req, res) => {
       }
     });
     await Category.findOne({
-      where: { id: categoryId },
+      where: { id: Number(categoryId) },
     }).then((data) => {
       if (!data) {
         res
@@ -153,7 +153,7 @@ export const updateCategoryProduct = async (req, res) => {
     });
     await Product.update(
       {
-        categoryId: categoryId,
+        categoryId: Number(categoryId),
       },
       { where: { id: productId }, hooks: false }
     ).then(async (data) => {
