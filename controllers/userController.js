@@ -3,6 +3,7 @@ import { Users } from "../models/index.js";
 import { compare } from "../helpers/bcrypt.js";
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "../config.js";
+import { numberWithCommas } from "../helpers/numberWithCommas.js";
 
 export const showUser = async (req, res) => {
   try {
@@ -20,6 +21,12 @@ export const showUser = async (req, res) => {
       order: [["createdAt", "DESC"]],
     }).then((data) => {
       // console.log(data);
+      data = data.filter(
+        (item) =>
+          (item.dataValues.balance = `Rp. ${numberWithCommas(
+            item.dataValues.balance
+          )} ,-`)
+      );
       data = data.filter(
         (item) =>
           (item.dataValues.createdAt = moment(item.dataValues.createdAt).format(
@@ -176,7 +183,9 @@ export const topupUser = async (req, res) => {
     ).then(async (data) => {
       if (data[0] === 1) {
         res.status(200).send({
-          message: `Your balance has been successfully updated to Rp. ${balance}`,
+          message: `Your balance has been successfully updated to Rp. ${numberWithCommas(
+            balance
+          )} ,-`,
         });
       }
     });

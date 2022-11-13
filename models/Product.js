@@ -1,5 +1,6 @@
 import db from "../db/database.js";
 import { DataTypes } from "sequelize";
+import { numberWithCommas } from "../helpers/numberWithCommas.js";
 
 const Products = db.define(
   "products",
@@ -84,7 +85,7 @@ const Products = db.define(
         // console.log("beforeCreate");
       },
       afterCreate: (products) => {
-        products.price = `Rp. ${products.price} ,-`;
+        products.price = `Rp. ${numberWithCommas(products.price)} ,-`;
       },
     },
   }

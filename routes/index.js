@@ -2,6 +2,7 @@ import { Router } from "express";
 import userRoutes from "./userRoutes.js";
 import categoryRoutes from "./categoryRoutes.js";
 import productRoutes from "./productRoutes.js";
+import transactionHistoryRoutes from "./transactionHistoryRoutes.js";
 import { authentication } from "../middlewares/authentication.js";
 import { authorizationAdmin } from "../middlewares/authorization-admin.js";
 
@@ -17,6 +18,6 @@ router.use("/users", userRoutes);
 router.use(authentication);
 router.use("/categories", authorizationAdmin, categoryRoutes);
 router.use("/products", authorizationAdmin, productRoutes);
-router.use("/transactions", () => {});
+router.use("/transactions", transactionHistoryRoutes);
 
 export default router;

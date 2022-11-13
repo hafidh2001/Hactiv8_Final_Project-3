@@ -1,4 +1,5 @@
 import { Product, Category } from "../models/index.js";
+import { numberWithCommas } from "../helpers/numberWithCommas.js";
 
 export const createProduct = async (req, res) => {
   const user = req.user;
@@ -58,7 +59,10 @@ export const showProducts = async (req, res) => {
       order: [["createdAt", "DESC"]],
     }).then((data) => {
       data = data.filter(
-        (item) => (item.dataValues.price = `Rp. ${item.dataValues.price} ,-`)
+        (item) =>
+          (item.dataValues.price = `Rp. ${numberWithCommas(
+            item.dataValues.price
+          )} ,-`)
       );
       res.status(200).send({ products: data });
     });
@@ -103,7 +107,9 @@ export const updateProduct = async (req, res) => {
               .send({ status: "error", message: "product doesn't exist" });
             return;
           }
-          data.dataValues.price = `Rp. ${data.dataValues.price}`;
+          data.dataValues.price = `Rp. ${numberWithCommas(
+            data.dataValues.price
+          )} ,-`;
           res.status(200).send({
             product: data,
           });
@@ -167,7 +173,9 @@ export const updateCategoryProduct = async (req, res) => {
               .send({ status: "error", message: "product doesn't exist" });
             return;
           }
-          data.dataValues.price = `Rp. ${data.dataValues.price}`;
+          data.dataValues.price = `Rp. ${numberWithCommas(
+            data.dataValues.price
+          )} ,-`;
           res.status(200).send({
             product: data,
           });
