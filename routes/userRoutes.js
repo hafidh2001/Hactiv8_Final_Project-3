@@ -14,7 +14,7 @@ const router = Router();
 router.get("/", showUser);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.put("/topup", authentication, topupUser);
+router.patch("/topup", authentication, topupUser);
 router.put("/:userId", authentication, updateUser);
 router.delete("/:userId", authentication, deleteUser);
 
