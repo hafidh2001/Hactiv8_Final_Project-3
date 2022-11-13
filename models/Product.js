@@ -73,6 +73,20 @@ const Products = db.define(
   {
     freezeTableName: true,
     timestamps: true,
+    hooks: {
+      beforeValidate: () => {
+        // console.log("beforeValidate");
+      },
+      afterValidate: async () => {
+        // console.log("afterValidate");
+      },
+      beforeCreate: () => {
+        // console.log("beforeCreate");
+      },
+      afterCreate: (products) => {
+        products.price = `Rp. ${products.price} ,-`;
+      },
+    },
   }
 );
 
