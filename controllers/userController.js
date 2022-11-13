@@ -159,6 +159,37 @@ export const updateUser = async (req, res) => {
   }
 };
 
+export const topupUser = async (req, res) => {
+  const user = req.user;
+  const { balance } = req.body;
+  try {
+    await Users.update(
+      {
+        balance: balance,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+        hooks: false,
+      }
+    ).then(async (data) => {
+      if (data[0] === 1) {
+        res.status(200).send({
+          message: `Your balance has been successfully updated to Rp. ${balance}`,
+        });
+      }
+    });
+  } catch (e) {
+    res.status(400).send({
+      status: "error",
+      field: e.errors[0].path,
+      value: e.errors[0].value,
+      message: e.errors[0].message,
+    });
+  }
+};
+
 export const deleteUser = async (req, res) => {
   const { userId } = req.params;
   const user = req.user;

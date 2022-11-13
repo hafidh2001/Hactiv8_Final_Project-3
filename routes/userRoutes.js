@@ -3,6 +3,7 @@ import {
   registerUser,
   loginUser,
   updateUser,
+  topupUser,
   deleteUser,
 } from "../controllers/userController.js";
 import { authentication } from "../middlewares/authentication.js";
@@ -13,6 +14,7 @@ const router = Router();
 router.get("/", showUser);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.put("/topup", authentication, topupUser);
 router.put("/:userId", authentication, updateUser);
 router.delete("/:userId", authentication, deleteUser);
 
