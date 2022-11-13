@@ -4,6 +4,12 @@ export const createProduct = async (req, res) => {
   const user = req.user;
   const { title, price, stock, categoryId } = req.body;
   try {
+    if (!categoryId) {
+      res
+        .status(401)
+        .send({ status: "error", message: "categoryId is required" });
+      return;
+    }
     await Category.findOne({
       where: { id: categoryId },
     }).then((data) => {
@@ -119,6 +125,12 @@ export const updateCategoryProduct = async (req, res) => {
   const user = req.user;
   const { categoryId } = req.body;
   try {
+    if (!categoryId) {
+      res
+        .status(401)
+        .send({ status: "error", message: "categoryId is required" });
+      return;
+    }
     await Product.findOne({
       where: { id: productId },
     }).then((data) => {
