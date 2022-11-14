@@ -48,7 +48,6 @@ export const registerUser = async (req, res) => {
       delete data.dataValues.password;
       delete data.dataValues.role;
       delete data.dataValues.updatedAt;
-      console.log(data.dataValues);
       res.status(201).send({
         user: data,
       });
