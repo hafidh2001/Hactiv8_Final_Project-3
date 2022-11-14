@@ -21,6 +21,10 @@ const TransactionHistory = db.define(
         isNumeric: true,
         notEmpty: true,
         notNull: true,
+        min: {
+          args: [1],
+          msg: "Minimum 1 items allowed in quantity",
+        },
         len: {
           args: [1, 255],
           msg: "Display quantity must be between 1 and 255 characters in length",

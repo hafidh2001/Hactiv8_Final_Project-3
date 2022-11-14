@@ -22,7 +22,7 @@ export const authentication = async (req, res, next) => {
     delete decode.exp;
     // check decode token with user data
     await Users.findOne({ where: { id: decode.id, email: decode.email } }).then(
-      async (data) => {
+      (data) => {
         // check if user is exist
         if (!data) {
           res
@@ -30,9 +30,10 @@ export const authentication = async (req, res, next) => {
             .json({ status: "error", message: "authorization failed" });
           return;
         }
+        delete data.dataValues.password;
+        req.user = { ...data.dataValues };
       }
     );
-    req.user = { ...decode };
     next();
   } catch (error) {
     next(error);
