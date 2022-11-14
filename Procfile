@@ -1,1 +1,1 @@
-# web: npm run prodgit pu
+web: npm run prod

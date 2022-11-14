@@ -42,6 +42,8 @@ CONFIGURE BASE PROJECT
 ***** setup script in package.json (how to run command : npm run scriptname)
     - "migrate-create": "node migrations/migrateCreateTable.js", (to run the migration create tables in the database)
     - "migrate-drop": "node migrations/migrateDropTable.js" (to run the migration drop tables in the database)
+    - "seeding-data": "node migrations/seedingData.js" (to run the seeding data in the database)
     - "dev": "yes | npx kill-port 8000 && nodemon index.js", (mix command : kill the running port and then run nodemon on the main page <yes : optional>)
     - "prod": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node index.js"
     - "prod-migrate-create": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node migrations/migrateCreateTable.js", (to run the migration create tables in the database)
+    - "prod-seeding-data": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node migrations/seedingData.js", (to run the seeding data in the database)

@@ -10,7 +10,8 @@
     "seeding-data": "node migrations/seedingData.js",
     "dev": "yes | npx kill-port 8000 && nodemon index.js",
     "prod": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node index.js",
-    "prod-migrate-create": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node migrations/migrateCreateTable.js"
+    "prod-migrate-create": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node migrations/migrateCreateTable.js",
+    "prod-seeding-data": "node migrations/seedingData.js"
   },
   "author": "hafidh ahmad fauzan",
   "license": "ISC",
