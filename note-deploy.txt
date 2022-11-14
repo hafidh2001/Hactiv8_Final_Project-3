@@ -57,6 +57,6 @@ USE HEROKU-CLI :
             or
             - heroku pg:psql (and then run this raw query to view the tables in the hosting database : SELECT table_schema || '.' || table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');)
     - re-deploy :
-        $ heroku restart (restart dynos for deploy)
+        $ heroku restart example-app (restart dynos for deploy)
         $ heroku logs --tail (to view log history)
           
