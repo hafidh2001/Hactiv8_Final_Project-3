@@ -1,19 +1,19 @@
 ## LINK HEROKU
 
-[Link deploy heroku](https://hafidh-h8-finalproject-2.herokuapp.com/)
+[Link deploy heroku](https://hafidh-h8-finalproject-3.herokuapp.com/)
 
 ```bash
 # klik link above or copy link below
-https://hafidh-h8-finalproject-2.herokuapp.com/
+https://hafidh-h8-finalproject-3.herokuapp.com/
 ```
 
 ## POSTMAN
 
-[Link to import postman](https://www.getpostman.com/collections/6ed0d5bace2b72a155a7)
+[Link to import postman](https://www.getpostman.com/collections/906363e157d7e03fa9c4)
 
 ```bash
 # klik link above or copy link below
-https://www.getpostman.com/collections/6ed0d5bace2b72a155a7
+https://www.getpostman.com/collections/906363e157d7e03fa9c4
 ```
 
 ## HOW TO CHECK & SET REMOTE GITHUB ?
