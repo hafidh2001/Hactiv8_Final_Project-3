@@ -201,4 +201,33 @@ export const showTransactionAdmin = async (req, res) => {
     });
   }
 };
-export const showTransactionById = async (req, res) => {};
+export const showTransactionById = async (req, res) => {
+  const { transactionId } = req.params;
+  const user = req.user;
+  try {
+    await TransactionHistory.findOne({
+      include: [
+        {
+          model: Product,
+          attributes: ["id", "title", "price", "stock", "categoryId"],
+        },
+      ],
+      where: {
+        id: transactionId,
+      },
+    }).then((data) => {
+      data.dataValues.total_price = `Rp. ${numberWithCommas(
+        data.dataValues.total_price
+      )} ,-`;
+      data.dataValues.product.price = `Rp. ${numberWithCommas(
+        data.dataValues.product.price
+      )} ,-`;
+      res.status(200).send({ TransactionHistories: data });
+    });
+  } catch (e) {
+    res.status(400).send({
+      status: "error",
+      message: e,
+    });
+  }
+};
