@@ -113,37 +113,92 @@ export const createTransactionHistory = async (req, res) => {
 };
 
 export const showTransactionUser = async (req, res) => {
-  //   try {
-  //     await Comments.findAll({
-  //       attributes: [
-  //         "id",
-  //         "userId",
-  //         "photoId",
-  //         "comment",
-  //         "createdAt",
-  //         "updatedAt",
-  //       ],
-  //       include: [
-  //         {
-  //           model: Photos,
-  //           attributes: ["id", "title", "caption", "poster_image_url"],
-  //         },
-  //         {
-  //           model: Users,
-  //           attributes: ["id", "username", "profile_image_url", "phone_number"],
-  //         },
-  //       ],
-  //       order: [["createdAt", "ASC"]],
-  //     }).then((data) => {
-  //       res.status(200).send({ comments: data });
-  //     });
-  //   } catch (e) {
-  //     res.status(400).send({
-  //       status: "error",
-  //       message: e,
-  //     });
-  //   }
+  const user = req.user;
+  try {
+    await TransactionHistory.findAll({
+      attributes: [
+        "id",
+        "productId",
+        "userId",
+        "quantity",
+        "total_price",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: Product,
+          attributes: ["id", "title", "price", "stock", "categoryId"],
+        },
+      ],
+      where: {
+        userId: user.id,
+      },
+      order: [["createdAt", "DESC"]],
+    }).then((data) => {
+      data = data.map((item) => {
+        item.dataValues.total_price = `Rp. ${numberWithCommas(
+          item.dataValues.total_price
+        )} ,-`;
+        item.dataValues.product.price = `Rp. ${numberWithCommas(
+          item.dataValues.product.price
+        )} ,-`;
+        return item;
+      });
+      res.status(200).send({ TransactionHistories: data });
+    });
+  } catch (e) {
+    res.status(400).send({
+      status: "error",
+      message: e,
+    });
+  }
 };
 
-export const showTransactionAdmin = async (req, res) => {};
+export const showTransactionAdmin = async (req, res) => {
+  const user = req.user;
+  try {
+    await TransactionHistory.findAll({
+      attributes: [
+        "id",
+        "productId",
+        "userId",
+        "quantity",
+        "total_price",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: Product,
+          attributes: ["id", "title", "price", "stock", "categoryId"],
+        },
+        {
+          model: Users,
+          attributes: ["id", "email", "balance", "gender", "role"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    }).then((data) => {
+      data = data.map((item) => {
+        item.dataValues.total_price = `Rp. ${numberWithCommas(
+          item.dataValues.total_price
+        )} ,-`;
+        item.dataValues.product.price = `Rp. ${numberWithCommas(
+          item.dataValues.product.price
+        )} ,-`;
+        item.dataValues.user.balance = `Rp. ${numberWithCommas(
+          item.dataValues.user.balance
+        )} ,-`;
+        return item;
+      });
+      res.status(200).send({ TransactionHistories: data });
+    });
+  } catch (e) {
+    res.status(400).send({
+      status: "error",
+      message: e,
+    });
+  }
+};
 export const showTransactionById = async (req, res) => {};

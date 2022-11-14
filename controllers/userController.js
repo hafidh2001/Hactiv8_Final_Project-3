@@ -21,18 +21,15 @@ export const showUser = async (req, res) => {
       order: [["createdAt", "DESC"]],
     }).then((data) => {
       // console.log(data);
-      data = data.filter(
-        (item) =>
-          (item.dataValues.balance = `Rp. ${numberWithCommas(
-            item.dataValues.balance
-          )} ,-`)
-      );
-      data = data.filter(
-        (item) =>
-          (item.dataValues.createdAt = moment(item.dataValues.createdAt).format(
-            "dddd, DD MMMM YYYY"
-          ))
-      );
+      data = data.map((item) => {
+        item.dataValues.balance = `Rp. ${numberWithCommas(
+          item.dataValues.balance
+        )} ,-`;
+        item.dataValues.createdAt = moment(item.dataValues.createdAt).format(
+          "dddd, DD MMMM YYYY"
+        );
+        return item;
+      });
       res.status(200).send(data);
     });
   } catch (e) {
