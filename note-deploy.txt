@@ -44,7 +44,7 @@ USE HEROKU-CLI :
         $ heroku addons (to view the resources installed in the application)
         $ heroku pg:info (to view a description of the hosting database)
         $ heroku pg:reset DATABASE_URL --confirm example-app (to reset hosting database)
-        $ heroku run npm run name_script (run script in package.json using heroku)
+        $ heroku run npm run name_script example-app (run script in package.json using heroku)
     - push data from a local database into a remote Heroku Postgres database
         $ set DATABASE_URL=postgres://{user}:{password}@{hostname}:{port}/{database-name} (to set the local database)
         $ heroku pg:push localdb DATABASE_URL -a example-app (pushes data from a local database into a remote Heroku Postgres database)
