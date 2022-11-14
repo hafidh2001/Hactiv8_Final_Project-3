@@ -31,6 +31,7 @@ export const authentication = async (req, res, next) => {
           return;
         }
         delete data.dataValues.password;
+        // so that when data updates occur (except email) users do not need to re-login because the data will always match
         req.user = { ...data.dataValues };
       }
     );
