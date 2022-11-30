@@ -38,12 +38,21 @@ $ git clone <remote_repo> (ex: git clone https://github.com/hafidh2001/Hactiv8_F
 $ git clone -b <branch> <remote_repo> (ex: git clone -b development https://github.com/hafidh2001/Hactiv8_Final_Project-3.git)
 ```
 
-## HOW TO RUN ?
+## HOW TO RUN TEST USING JEST IN THIS PROJECT ?
 
 ```bash
+# SETUP ENVIRONMENT
+
+# step 1 : install all dependencies && dev-dependencies
 $ npm install (to install dependencies on the project stored in package.json)
-# step 1 : rename .env.example to .env
-# step 2 : fill in the value of each secret variable in .env
+# step 2 : create .env file and duplicates the contents of the .env.example
+$ touch .env 
+# step 3 : create db in database and write the url in .env
+$ DATABASE_URL=postgres://{user}:{password}@{hostname}:{port}/{database-name}
+# step 4 : migrate db using script in package.json
+$ npm run migrate-create
+# step 5 : seeding data to db using script in package.json
+$ npm run seeding-data
 ```
 
 ## DOCUMENTATION
