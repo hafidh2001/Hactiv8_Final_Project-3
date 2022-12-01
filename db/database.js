@@ -13,9 +13,11 @@ const db =
         },
         typeValidation: true,
       })
-    : new Sequelize(database_url, {
+    : node_env === "development"
+    ? new Sequelize(database_url, {
         dialect: "postgres",
         typeValidation: true,
-      });
+      })
+    : null;
 
 export default db;
