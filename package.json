@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "migrate-create": "node migrations/migrateCreateTable.js",
     "migrate-drop": "node migrations/migrateDropTable.js",
     "seeding-data": "node migrations/seedingData.js",
-    "dev": "yes | npx kill-port 8000 && nodemon index.js",
-    "prod": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node index.js",
+    "dev": "yes | npx kill-port 8000 && nodemon server.js",
+    "prod": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node server.js",
     "prod-migrate-create": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node migrations/migrateCreateTable.js",
     "prod-seeding-data": "export NODE_TLS_REJECT_UNAUTHORIZED='0' && node migrations/seedingData.js"
   },
